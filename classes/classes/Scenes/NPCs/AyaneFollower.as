@@ -236,10 +236,10 @@ public function ayaneWorship():void
 /* 	if (player.hasCock() && player.hasVagina()) {
 		 addButton(0, "Herm Worship", ayaneHermWorship);
 	}
-	else addButtonDisabled(0, "Herm Worship", "You need a cock and a vagina for this");
+	else addButtonDisabled(0, "Herm Worship", "You need a cock and a vagina for this"); */
 	if (player.hasCock()) {
 		addButton(1, "Cock Worship", ayaneCockWorship);
-	} */
+	}
 	else addButtonDisabled(1, "Cock Worship", "You need a cock for this");
 	if (player.hasVagina()) {
 		addButton(2, "Vaginal Worship", ayaneVaginalWorship);
