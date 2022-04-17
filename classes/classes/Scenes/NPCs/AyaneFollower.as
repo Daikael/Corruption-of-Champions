@@ -233,10 +233,10 @@ public function ayaneWorship():void
 	clearOutput();
 	outputText("You tell Ayane you could use some relief. She quickly takes the hint, helping you to remove any clothes you might be wearing and kneeling down, her face level with your hips as she whispers holy prayers.\n\n");
 	menu();
-/* 	if (player.hasCock() && player.hasVagina()) {
+ 	if (player.hasCock() && player.hasVagina()) {
 		 addButton(0, "Herm Worship", ayaneHermWorship);
 	}
-	else addButtonDisabled(0, "Herm Worship", "You need a cock and a vagina for this"); */
+	else addButtonDisabled(0, "Herm Worship", "You need a cock and a vagina for this"); 
 	if (player.hasCock()) {
 		addButton(1, "Cock Worship", ayaneCockWorship);
 	}
@@ -314,7 +314,7 @@ public function ayaneVaginalWorship():void
 	player.orgasm('vaginal');
 	doNext(camp.returnToCampUseOneHour);
 }
-/* public function ayaneHermWorship():void
+ public function ayaneHermWorship():void
 {
 	clearOutput();
 	outputText("Go Yell at daikael on discord because she is a fucking idiot and forgot to finish this before pushing."); //daitodo
@@ -332,7 +332,7 @@ public function ayaneVaginalWorship():void
 		doNext(camp.returnToCampUseOneHour);
 	}
 	doNext(camp.returnToCampUseOneHour);
-} */
+} 
 
 public function ayaneAnal():void
 {
