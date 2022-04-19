@@ -2247,7 +2247,16 @@ public function talkMenu():void
 	if (player.cor <= 10 && player.lust >= 33 && monk == -1) addButtonDisabled(9, "Sex?", "You need to spend more time with Jojo. \n\nTalk sessions: " + flags[kFLAGS.TIMES_TALKED_WITH_JOJO] + "/6 \nTraining sessions: " + flags[kFLAGS.TIMES_TRAINED_WITH_JOJO] + "/10 \nMeditation sessions: " + player.statusEffectv1(StatusEffects.JojoMeditationCount) + "/10 \nYou must be pure enough and have sufficient lust as well.");
 	if (player.cor <= 10 && player.lust >= 33 && flags[kFLAGS.TIMES_TALKED_WITH_JOJO] >= 6 && flags[kFLAGS.TIMES_TRAINED_WITH_JOJO] >= 10 && player.statusEffectv1(StatusEffects.JojoMeditationCount) >= 10 && monk > -3) addButton(9, "Sex?", offerSexFirstTimeHighAffection).hint("You've spent quite the time with Jojo, maybe you can offer him if he's willing to have sex with you?"); //Will unlock consensual sex scenes.
 	if (monk <= -3) removeButton(9);
+	if (TyrantiaFollower.TyrantiaFollowerStage == 5) addButton(10, "Tyrantia", TyrantiaEggQuestJoJo);
 	addButton(14, "Back", jojoCamp);
+}
+
+private function TyrantiaEggQuestJoJo():void {
+	clearOutput();
+	outputText("You ask Jojo about his holy mantras and abilities, and if he could purify the unborn in such a way. You tell him about Tyrantia’s desire to have a family, and her guilt over her own corruption and how that’d affect a child.\n\n");
+	outputText("Jojo shakes his head, sending a ripple through his fur. \"<i>My methods draw upon a conscious desire to be free from taint and corruption.</i>\" He sits down. \"<i>I will meditate on your request, but I do not believe that I can help you.</i>\" You thank Jojo for his time and walk away, heavy-hearted.");
+	eachMinuteCount(15);
+	doNext(talkMenu);
 }
 
 //Talk
@@ -2652,7 +2661,10 @@ public function apparantlyJojoDOESlift():void
 		if (SceneLib.emberScene.followerEmber()) enlightenedBlurbs.push("You can hear Ember cleaning" + emberScene.emberMF("his", "her") + "scales.");
 		if (player.hasStatusEffect(StatusEffects.CampRathazul)) enlightenedBlurbs.push("You can hear Rathazul experimenting with surprisingly nimble fingers.");
 		if (sophieFollower()) enlightenedBlurbs.push("You can hear Sophie breathing as she sleeps.");
-		if (flags[kFLAGS.IZMA_FOLLOWER_STATUS] > 0) enlightenedBlurbs.push("You can hear Izma flipping through the pages of a book."); // TODO: (if Izmael gets put in) you can hear Izmael doing push ups to stay fit.
+		if (flags[kFLAGS.IZMA_FOLLOWER_STATUS] > 0) {
+			if (flags[kFLAGS.IZMA_BROFIED] > 0) enlightenedBlurbs.push("You can hear Izmael doing push-ups to stay fit.");
+			else enlightenedBlurbs.push("You can hear Izma flipping through the pages of a book.");
+		}
 		if (SceneLib.helScene.followerHel()) enlightenedBlurbs.push("You can hear Helia throwing her fists at nothing.");
 		outputText(enlightenedBlurbs[rand(enlightenedBlurbs.length)] + "\n\n");
 	}
