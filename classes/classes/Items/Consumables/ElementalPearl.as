@@ -38,7 +38,7 @@ public class ElementalPearl extends Consumable {
         descr += "\n\n<b>Effect: removes debuffs created by " + requiredPerk.name() + " perk.</b>";
         super(
             "E"+tier+"Pearl",
-            "Elemen"+tier+"CPearl",
+            "El."+tier+"C.Pearl",
             "an iridescent "+NUMBER_WORDS_NORMAL[tier]+"-colored pearl",
             tier == 3 ? 200 : tier == 5 ? 400 : 800,
             descr
@@ -67,7 +67,7 @@ public class ElementalPearl extends Consumable {
 
     public function eatIt():void {
         clearOutput();
-        outputText("You cram the pearl in your mouth and swallow it like a giant pill with some difficulty.  Surprisingly there is no discomfort, only a calming sensation of three steams of mystical energies spreading in your body and restoring your lost strength, speed and toughness.");
+        outputText("You cram the pearl in your mouth and swallow it like a giant pill with some difficulty.  Surprisingly there is no discomfort, only a calming sensation of three steams of mystical energies spreading in your body and restoring your lost strength, speed and toughness.\n\n");
         player.createPerk(itemPerk, 0, 0, 0, 0);
         outputText("<b>Gained perk: " + itemPerk.name() + "</b>")
         SceneLib.inventory.itemGoNext();
@@ -85,7 +85,6 @@ public class ElementalPearl extends Consumable {
     */
     public function fixSave():Boolean {
         if (player.hasPerk(itemPerk) && !player.hasPerk(requiredPerk)) {
-            clearOutput();
             outputText("<i>Oops. Seems like you have an impossible perk combination. Someone has probably forgotten write on a pearl that it's useless when you're not an elementalist. So... umm...</i>\n\n");
             outputText("You cough and vomit, expelling the pearl. Surprisingly, it's completely intact. Damn sphere even managed to burn your tongue on its way out.");
             player.removePerk(itemPerk);

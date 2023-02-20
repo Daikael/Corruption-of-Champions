@@ -11,6 +11,7 @@ import classes.Scenes.Areas.Swamp.CorruptedDrider;
 import classes.Scenes.NPCs.DriderTown;
 import classes.Scenes.NPCs.LilyFollower;
 import classes.Scenes.NPCs.TyrantiaFollower;
+import classes.Scenes.SceneLib;
 import classes.internals.SaveableState;
 import classes.internals.Utils;
 
@@ -525,7 +526,10 @@ public class BelisaFollower extends NPCAwareContent implements TimeAwareInterfac
 	public function BelisaHangFish():void {
 		clearOutput();
 		outputText("<i>\"Oh, is that all?\"</i> Belisa pops down under the water, then into her silk orb. \"A-ha!\" She comes out with two odd, hooked spears. <i>\"If you want to fish with me, I’ll teach you how we Driders do it!\"</i>\n\n");
-		if (player.hasGills()) outputText(" She brings an odd bunch of silk down with her, and you look at it curiously. She drapes it over your head, and you breathe in a lungful of fresh air. You point at your gills, and she nods, taking a breath herself. She gives you a thumbs-up, and doesn’t give you the air-bag again.\n\n");
+		if (player.hasGills() || player.hasPerk(PerkLib.AffinityUndine)) {
+			if (player.hasPerk(PerkLib.AffinityUndine)) outputText("  She brings an odd bunch of silk down with her, and you look at it curiously. She drapes it over your head, and you push it away, taking in a deep breath. She gives you a thumbs-up, and doesn’t give you the air-bag again.\n\n");
+			else outputText(" She brings an odd bunch of silk down with her, and you look at it curiously. She drapes it over your head, and you breathe in a lungful of fresh air. You point at your gills, and she nods, taking a breath herself. She gives you a thumbs-up, and doesn’t give you the air-bag again.\n\n");
+		}
 		else outputText(" You dive down, deep into the lake with Belisa. Eventually, you begin to run low on air, and...she keeps going down! You turn back, but Belisa grabs your foot, pulling you down to her. The spider-girl produces an odd, silky bag, draping it over your head. You struggle at first, but you quickly realize that the bag’s...full of breathable air? She takes it off your head, and giggles, sending bubbles back up to the surface of the water.\n\n");
 		outputText("You spend an hour under the water with Belisa, and she swims with you. You catch a few fish, but you can’t hold a candle to the water-spider. Her eight lower limbs move precisely, and she swims circles around you. You miss your spear throw a few times, and when you do, she gives you a bright laugh, swimming over to your spear and bringing it back to you. It’s odd, but a lot of fun, just throwing spears and swimming deep under the lake. Eventually, you point back to the surface. Belisa’s bright smile shrinks a little, but she nods, guiding you back to her silky orb.\n\n");
 		outputText("<i>\"I forgot how nice it was to have a fishing partner\"</i>, she says simply, taking your hand as you leave the water together. <i>\"Come back soon, okay?\"</i> She looks into your eyes, then pulls her hand away. <i>\"It gets lonely out here.\"</i> You smile to yourself as Belisa dives back into the water, and head back to camp.\n\n");
@@ -588,9 +592,12 @@ public class BelisaFollower extends NPCAwareContent implements TimeAwareInterfac
 		menu();
 		//addButton(0, "Bands", BuyHolyBands);
 		addButton(1, useables.T_SSILK.shortName, belisaBuy, useables.T_SSILK, 300);
-		addButton(2, undergarments.DRI_PANTY.shortName, belisaBuy, undergarments.DRI_PANTY, 1400);
-		addButton(3, undergarments.DRI_BRA.shortName, belisaBuy, undergarments.DRI_BRA, 1200);
-		addButton(4, "Nevermind", Encounterback);
+		addButton(2, undergarments.DRI_PANTY.shortName, belisaBuy, undergarments.DRI_PANTY, 2100);
+		addButton(3, undergarments.DRI_BRA.shortName, belisaBuy, undergarments.DRI_BRA, 1800);
+		addButton(5, armors.DWSROBE.shortName, belisaBuy, armors.DWSROBE, 13200);
+		addButton(6, armors.DWARMOR.shortName, belisaBuy, armors.DWARMOR, 2160);
+		if (BelisaInCamp) addButton(14, "Back", BelisaMainCampMenu);
+		else addButton(14, "Nevermind", Encounterback);
 	}
 	public function BuyHolyBands():void {
 		clearOutput();
@@ -642,6 +649,7 @@ public class BelisaFollower extends NPCAwareContent implements TimeAwareInterfac
 	}
 	public function belisaBuy1(itype:ItemType, cost:Number):void {
 		clearOutput();
+		if (itype == useables.T_SSILK) outputText("<i>\"Oh, you want raw silk?\"</i> She looks mildly disappointed, but pulls out a few spools from one of her boxes. <i>\"You know we Driders were the best weavers on Mareth, right?\"</i> She sighs, clearly not very pleased with selling her silk raw. <i>\"Okay, that’s 300 gems.\"</i>\n\n");
 		player.gems -= cost;
 		statScreenRefresh();
 		inventory.takeItem(itype, BelisaShop);
@@ -716,6 +724,7 @@ public class BelisaFollower extends NPCAwareContent implements TimeAwareInterfac
 		addButton(2, "Hang", BelisaHang);
 		addButton(3, "Shop", BelisaShop);
 		addButton(4, "Sex", BelisaSex);
+		if (DriderTown.DriderTownComplete) addButton(13, "Back", SceneLib.dridertown.DriderTownEnter).hint("Return to main DriderTown menu.");
 		addButton(14, "Leave", camp.campLoversMenu);
 	}
 	
@@ -807,16 +816,11 @@ public class BelisaFollower extends NPCAwareContent implements TimeAwareInterfac
 	
 	public function BelisaAnal():void {
 		clearOutput();
-		outputText("You tell Belisa that you want to make love to her. The Drider-girl blushes, wrapping her arms around your waist and gently pulling you in towards her. You let her slide your [armor] off\n\n");
-		if (player.upperGarment != UndergarmentLib.NOTHING){ //Need the command for if player is wearing uppergarment
-			outputText("and she slides her soft fingers underneath your [uppergarment]. With a rustle and a smile, your [uppergarment] is tossed back down to the floor below.\n\n");
-		}
-		if (player.lowerGarment != UndergarmentLib.NOTHING) { //again, I need the correct command here
-			outputText("Belisa licks her lips as she slides your [lowergarment] aside, wrapping both hands around your [cock].\n\n");
-		}
-		else {
-			outputText("With your [cock] exposed, Belisa wastes no time, wrapping both hands around your shaft.\n\n");
-		}
+		outputText("You tell Belisa that you want to make love to her. The Drider-girl blushes, wrapping her arms around your waist and gently pulling you in towards her. You let her slide your [armor] off");
+		if (player.upperGarment != UndergarmentLib.NOTHING) outputText("and she slides her soft fingers underneath your [uppergarment]. With a rustle and a smile, your [uppergarment] is tossed back down to the floor below");
+		outputText(".\n\n");
+		if (player.lowerGarment != UndergarmentLib.NOTHING) outputText("Belisa licks her lips as she slides your [lowergarment] aside, wrapping both hands around your [cock].\n\n");
+		else outputText("With your [cock] exposed, Belisa wastes no time, wrapping both hands around your shaft.\n\n");
 		outputText("Her slippery palms are warm, nails barely touching your [cock] as she gives you an amateurish handjob. While not unpleasant, her hands around your tool isn’t what you had in mind.\n\n");
 		outputText("You grasp her shoulders, pulling Belisa into a kiss. After a few seconds, you tell her that she did a fine job warming you up, but you had something else in mind. Rubbing one of her Drider legs, you tell Belisa that you want to try something different, if she’s up for some fun.\"Okay, [name],\" Belisa breathes, her cooter already leaking dollops of pre. \"What is it?\n\n");
 		outputText("You poke her clit teasingly, and you scootch away, keeping one hand on her shoulder as you maneuver yourself. You slide one foot underneath her, mounting her sideways on the bed. As she tries to turn her upper body, you slap her ass, asking her to trust you. Belisa subsides, but is clearly confused.\n\n");
@@ -1044,7 +1048,7 @@ public class BelisaFollower extends NPCAwareContent implements TimeAwareInterfac
 		outputText("<i>\"I’m guessing you have to go now?\"</i> You give her a nod. You tell her that you have work you need to do. Belisa, still naked, body glistening with sweat and your combined love juices, looks you in the eyes, biting her lip. <i>\"Look…I know you’re capable…But stay safe.\"</i> Belisa notices you looking at her, and she sighs, covering her C-cups with one arm. \"You may be capable, powerful and all that…But…You’re still one person. Just…Come back to me.\"\n\n");
 		outputText("You give Belisa a chaste kiss on the cheek, and as you get dressed, you tell Belisa that you’ll always return. No demon’s going to get the best of you. She shakes her head, but doesn’t say anything. You dress and come back, ruffling her long, black hair roughly. <i>\"Headpats for luck!\"</i> You yell, stopping just short of giving Belisa a noogie.\n\n");
 		outputText("<i>\"H-hey!\"</i> She yells, and you laugh, tossing the door open and leaving back to camp. Belisa sticks her head out the door, then looks down, realizing she’s naked…and she almost joined you outside. <i>\"Eep!\"</i> She slams the door shut, and you head back to camp.\n\n");
-		if (preg && DriderTown.BelisaPregnancy == 0 && DriderTown.BelisaKidsEggsHatching < 48 && rand(100) < 50) DriderTown.BelisaPregnancy = 72;
+		if (preg && DriderTown.BelisaPregnancy == 0 && rand(100) < chanceToFail()) DriderTown.BelisaPregnancy = 72;
 		if (CoC.instance.inCombat) cleanupAfterCombat();
 		doNext(camp.returnToCampUseOneHour);
 	}
@@ -1057,9 +1061,16 @@ public class BelisaFollower extends NPCAwareContent implements TimeAwareInterfac
 		outputText("<i>\"Well...I mean, I wouldn’t mind at all. They’re yours, and more of you is a good thing.\"</i> She blushes, seemingly embarrassed by that declaration. You smile, putting your palms on her cheeks. You remind Belisa that they’d also be half her, which makes her smile.\n\n");
 		outputText("You cuddle in the afterglow with your Drider lover, but after a while, you gently pull yourself from her arms.\n\n");
 		outputText("<i>\"You’ve got to go, huh?\"</i> Belisa asks, somewhat saddened. <i>\"Come back soon, [name].\"</i>\n\n");
-		if (DriderTown.BelisaPregnancy == 0 && DriderTown.BelisaKidsEggsHatching < 48 && rand(100) < 50) DriderTown.BelisaPregnancy = 72;
+		if (DriderTown.BelisaPregnancy == 0 && rand(100) < chanceToFail()) DriderTown.BelisaPregnancy = 72;
 		if (CoC.instance.inCombat) cleanupAfterCombat();
 		doNext(camp.returnToCampUseOneHour);
+	}
+	
+	private function chanceToFail():Number {
+		var chance:Number = 10;
+		chance += Math.min(player.cumQ() / 25,40);
+		chance += Math.min(player.virilityQ() * 100, 50);
+		return chance;
 	}
 
 	public function timeChange():Boolean {

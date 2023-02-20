@@ -1,7 +1,6 @@
 ﻿package classes.Scenes.NPCs{
 import classes.*;
 import classes.GlobalFlags.kFLAGS;
-import classes.Scenes.NPCs.BelisaFollower;
 import classes.display.SpriteDb;
 
 public class Rathazul extends NPCAwareContent implements TimeAwareInterface {
@@ -173,14 +172,13 @@ private function rathazulWorkOffer():Boolean {
 	spriteSelect(SpriteDb.s_rathazul);
 	var totalOffers:int = 0;
 	var spoken:Boolean = false;
-	var purify:Boolean = false;
 	var debimbo:Boolean = false;
 	var lethiciteDefense:Function = null;
 	if (flags[kFLAGS.MINERVA_PURIFICATION_RATHAZUL_TALKED] == 1 && flags[kFLAGS.MINERVA_PURIFICATION_PROGRESS] < 10) {
 		purificationByRathazulBegin();
 		return true;
 	}
-	if (BelisaFollower.BelisaQuestOn && BelisaFollower.BelisaRalthTalked == false) {
+	if (BelisaFollower.BelisaQuestOn && !BelisaFollower.BelisaRalthTalked) {
 		BelisaRalthazulTalk();
 		return true;
 	}
@@ -192,27 +190,22 @@ private function rathazulWorkOffer():Boolean {
 	var pCounter:int = 0;
 	//Item purification offer
 	if(player.hasItem(consumables.INCUBID)) {
-		purify = true;
 		totalOffers++;
 		pCounter++;
 	}
 	if(player.hasItem(consumables.SUCMILK)) {
-		purify = true;
 		totalOffers++;
 		pCounter++;
 	}
 	if(player.hasItem(consumables.SDELITE)) {
-		purify = true;
 		totalOffers++;
 		pCounter++;
 	}
 	if(player.hasItem(consumables.LABOVA_)) {
-		purify = true;
 		totalOffers++;
 		pCounter++;
 	}
 	if(player.hasItem(consumables.MINOCUM)) {
-		purify = true;
 		totalOffers++;
 		pCounter++;
 	}
@@ -221,7 +214,6 @@ private function rathazulWorkOffer():Boolean {
 			outputText("The rat mentions, \"<i>I see you have at least one tainted item on you... for 20 gems I could remove most of the taint, making it a good deal safer to use.  Of course, who knows what kind of freakish transformations it would cause...</i>\"\n\n");
 		else
 			outputText("The rat mentions, \"<i>I see you have a number of demonic items on your person.  For 20 gems I could attempt to remove the taint from one of them, rendering it a good deal safer for consumption.  Of course it would not remove most of the transformative properties of the item...</i>\"\n\n");
-		purify = true;
 		spoken = true;
 		totalOffers += pCounter;
 	}
@@ -261,7 +253,7 @@ private function rathazulWorkOffer():Boolean {
 		spoken = true;
 	}
 	//Vines
-	if(player.keyItemv1("Marae's Lethicite") > 0 && !player.hasStatusEffect(StatusEffects.DefenseCanopy) && player.hasStatusEffect(StatusEffects.CampRathazul)) {
+	if(player.hasKeyItem("Marae's Lethicite") >= 0 && player.keyItemvX("Marae's Lethicite", 1) > 0 && !player.hasStatusEffect(StatusEffects.DefenseCanopy) && player.hasStatusEffect(StatusEffects.CampRathazul)) {
 		outputText("His eyes widen in something approaching shock when he sees the Lethicite crystal you took from Marae.  Rathazul stammers, \"<i>By the goddess... that's the largest piece of lethicite I've ever seen.  I don't know how you got it, but there is immense power in those crystals.  If you like, I know a way we could use its power to grow a canopy of thorny vines that would hide the camp and keep away imps.  Growing such a defense would use a third of that lethicite's power.</i>\"\n\n");
 		totalOffers++;
 		spoken = true;
@@ -308,7 +300,10 @@ private function rathazulWorkOffer():Boolean {
 		else
 			addButtonDisabled(0, "Shop", "You can't afford anything Rathazul has to offer.");
 		addButton(1, "Purify", purifySomething).hint("Ask him to purify any tainted potions. \n\nCost: 20 Gems.");
-		if (BelisaFollower.BelisaRalthTalked && BelisaFollower.BelisaFollowerStage == 0 && player.hasItem(consumables.SHARK_T) && player.hasItem(consumables.PPHILTR) && player.hasItem(consumables.VITAL_T)) addButton(3, "C.CurePotion", RathazulMakesToothCursePotion).hint("Ask him to make cure curse cure potion. \n\nNeeds shark tooth, purity philter and vitality tincture");
+		if (BelisaFollower.BelisaRalthTalked && BelisaFollower.BelisaFollowerStage == 0) {
+			if (player.hasItem(consumables.SHARK_T) && player.hasItem(consumables.PPHILTR) && player.hasItem(consumables.VITAL_T)) addButton(3, "C.CurePotion", RathazulMakesToothCursePotion).hint("Ask him to make cure curse cure potion. \n\nNeeds shark tooth, purity philter and vitality tincture");
+			else addButtonDisabled(3, "C.CurePotion", "Ask him to make cure curse cure potion. \n\nNeeds shark tooth, purity philter and vitality tincture");
+		}
 		if (dyes && player.hasItem(consumables.REPTLUM, 1) && flags[kFLAGS.ARIAN_SCALES] > 0) addButton(4, "Make Dye", makeDyes).hint("Ask him to make a special dye for you. (Only dyes here are for Arian) \n\nCost: 50 Gems.");
 		if (player.hasItem(consumables.BEEHONY)) addButton(5, consumables.PURHONY.shortName, rathazulMakesPureHoney).hint("Ask him to distill a vial of bee honey into a pure honey. \n\nCost: 25 Gems \nNeeds 1 vial of Bee Honey");
 		if (debimbo) addButton(6, "Debimbo", makeADeBimboDraft).hint("Ask Rathazul to make a debimbofying potion for you. \n\nCost: 250 Gems \nNeeds 5 Scholar Teas.");

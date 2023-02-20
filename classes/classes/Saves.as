@@ -638,7 +638,6 @@ public function savePermObject(isFile:Boolean):void {
 		saveFile.data.flags[kFLAGS.BACKGROUND_STYLE] = flags[kFLAGS.BACKGROUND_STYLE];
 		saveFile.data.flags[kFLAGS.IMAGEPACK_OFF] = flags[kFLAGS.IMAGEPACK_OFF];
 		saveFile.data.flags[kFLAGS.SPRITE_STYLE] = flags[kFLAGS.SPRITE_STYLE];
-		saveFile.data.flags[kFLAGS.SFW_MODE] = flags[kFLAGS.SFW_MODE];
 		saveFile.data.flags[kFLAGS.WATERSPORTS_ENABLED] = flags[kFLAGS.WATERSPORTS_ENABLED];
 		saveFile.data.flags[kFLAGS.USE_12_HOURS] = flags[kFLAGS.USE_12_HOURS];
 		saveFile.data.flags[kFLAGS.USE_METRICS] = flags[kFLAGS.USE_METRICS];
@@ -705,7 +704,6 @@ public function loadPermObject():void {
 			if (saveFile.data.flags[kFLAGS.BACKGROUND_STYLE] != undefined) flags[kFLAGS.BACKGROUND_STYLE] = saveFile.data.flags[kFLAGS.BACKGROUND_STYLE];
 			if (saveFile.data.flags[kFLAGS.IMAGEPACK_OFF] != undefined) flags[kFLAGS.IMAGEPACK_OFF] = saveFile.data.flags[kFLAGS.IMAGEPACK_OFF];
 			if (saveFile.data.flags[kFLAGS.SPRITE_STYLE] != undefined) flags[kFLAGS.SPRITE_STYLE] = saveFile.data.flags[kFLAGS.SPRITE_STYLE];
-			if (saveFile.data.flags[kFLAGS.SFW_MODE] != undefined) flags[kFLAGS.SFW_MODE] = saveFile.data.flags[kFLAGS.SFW_MODE];
 			if (saveFile.data.flags[kFLAGS.WATERSPORTS_ENABLED] != undefined) flags[kFLAGS.WATERSPORTS_ENABLED] = saveFile.data.flags[kFLAGS.WATERSPORTS_ENABLED];
 			if (saveFile.data.flags[kFLAGS.USE_12_HOURS] != undefined) flags[kFLAGS.USE_12_HOURS] = saveFile.data.flags[kFLAGS.USE_12_HOURS];
 			if (saveFile.data.flags[kFLAGS.USE_METRICS] != undefined) flags[kFLAGS.USE_METRICS] = saveFile.data.flags[kFLAGS.USE_METRICS];
@@ -938,6 +936,9 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.dualWLXP = player.dualWLXP;
 		saveFile.data.dualWFLevel = player.dualWFLevel;
 		saveFile.data.dualWFXP = player.dualWFXP;
+		//Mining
+		saveFile.data.miningLevel = player.miningLevel;
+		saveFile.data.miningXP = player.miningXP;
 		//Herbalism
 		saveFile.data.herbalismLevel = player.herbalismLevel;
 		saveFile.data.herbalismXP = player.herbalismXP;
@@ -2047,6 +2048,15 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 			player.dualWFLevel = 0;
 		else
 			player.dualWFLevel = saveFile.data.dualWFLevel;
+		//Mining
+		if (saveFile.data.miningXP == undefined)
+			player.miningXP = 0;
+		else
+			player.miningXP = saveFile.data.miningXP;
+		if (saveFile.data.miningLevel == undefined)
+			player.miningLevel = 0;
+		else
+			player.miningLevel = saveFile.data.miningLevel;
 		//Herbalism
 		if (saveFile.data.herbalismXP == undefined)
 			player.herbalismXP = 0;
@@ -2398,7 +2408,7 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 			}
 
 			if (ptype == null) {
-				trace("ERROR: Unknown perk id=" + id);
+				CoC_Settings.error("Unknown perk id=" + id);
 				//(saveFile.data.perks as Array).splice(i,1);
 				// NEVER EVER EVER MODIFY DATA IN THE SAVE FILE LIKE THIS. EVER. FOR ANY REASON.
 			} else {

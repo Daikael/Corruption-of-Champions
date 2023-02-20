@@ -1,12 +1,9 @@
 
 package classes.Scenes.Dungeons.EbonLabyrinth
 {
-import classes.GlobalFlags.kFLAGS;
 import classes.BaseContent;
-import classes.Scenes.SceneLib;
 import classes.StatusEffects;
 import classes.EventParser;
-import classes.Scenes.Dungeons.EbonLabyrinth.EyeTyrant;
 
 public class EyeTyrantScene extends BaseContent {
     public function EyeTyrantScene() {}
@@ -36,6 +33,6 @@ public class EyeTyrantScene extends BaseContent {
         if (player.hasStatusEffect(StatusEffects.TFDealer2) && player.statusEffectv1(StatusEffects.TFDealer2) < 1) player.addStatusValue(StatusEffects.TFDealer2, 1, 1);
         else player.createStatusEffect(StatusEffects.TFDealer2, 1, 0, 0, 0);
         cleanupAfterCombat();
-		}
+	}
 }
 }

@@ -20,15 +20,12 @@ import classes.GlobalFlags.kACHIEVEMENTS;
 import classes.GlobalFlags.kFLAGS;
 import classes.Items.*;
 import classes.Scenes.Areas.Desert.SandWitchScene;
-import classes.Scenes.Dungeons.DungeonAbstractContent;
 import classes.Scenes.NPCs.JojoScene;
 import classes.Scenes.NPCs.XXCNPC;
 import classes.Scenes.SceneLib;
 import classes.Scenes.Metamorph;
 import classes.lists.BreastCup;
 import classes.lists.Gender;
-import classes.Stats.BuffableStat;
-import classes.Stats.IStat;
 import classes.display.SpriteDb;
 
 import classes.GeneticMemories.*;
@@ -200,7 +197,7 @@ import coc.view.MainView;
 			if (flags[kFLAGS.NEW_GAME_PLUS_LEVEL] == 0) {
 				player.balls = 0;
 				player.ballSize = 0;
-				player.clitLength = 0;
+				if (player.hasVagina()) player.clitLength = 0;
 			}
 			player.hoursSinceCum = 0;
 			player.cumMultiplier = 1;
@@ -359,16 +356,12 @@ import coc.view.MainView;
 				if (hadOldVagina) player.createVagina(true);
 				if (player.balls > 2) player.balls = 2;
 				if (player.ballSize > 2) player.ballSize = 2;
-				if (player.clitLength > 1.5) player.clitLength = 1.5;
 				while (player.breastRows.length > 1)
 				{
 					player.removeBreastRow(1, 1);
 				}
 				if (player.nippleLength > 0.25) player.nippleLength = 0.25;
 				while (player.biggestTitSize() > 14) player.shrinkTits(true);
-				//Sorry but you can't come, Valeria!
-			//	if (!(oldPlayer.armor is GooArmor))
-			//	player.setArmor(armors.C_CLOTH);
 			}
 			//Clear Statuses
 			var statusTemp:Array = [];
@@ -429,7 +422,6 @@ import coc.view.MainView;
                     kFLAGS.SCENEHUNTER_UNI_HERMS,
                     kFLAGS.LOW_STANDARDS_FOR_ALL,
                     kFLAGS.HYPER_HAPPY,
-                    kFLAGS.SFW_MODE,
                     kFLAGS.NEW_GAME_PLUS_BONUS_UNLOCKED_HERM,
                     kFLAGS.MELEE_DAMAGE_OVERHAUL,
                     kFLAGS.LVL_UP_FAST,
@@ -585,7 +577,6 @@ import coc.view.MainView;
 			//Genetalia
 			player.balls = 2;
 			player.ballSize = 1;
-			player.clitLength = 0;
 			player.createCock();
 			player.cocks[0].cockLength = 5.5;
 			player.cocks[0].cockThickness = 1;
@@ -1572,7 +1563,7 @@ import coc.view.MainView;
 			hideUpDown();
 			dynStats("lus", 40, "cor", 2);
 			model.time.hours = 18;
-			outputText("You wake with a splitting headache and a body full of burning desire.  A shadow darkens your view momentarily and your training kicks in.  You roll to the side across the bare ground and leap to your feet.  A surprised looking imp stands a few feet away, holding an empty vial.  He's completely naked, an improbably sized pulsing red cock hanging between his spindly legs.  You flush with desire as a wave of lust washes over you, your mind reeling as you fight ");
+			outputText("You wake with a splitting headache and a body full of burning desire.  A shadow darkens your view momentarily and your training kicks in.  You roll to the side across the bare ground and leap to your feet.  A surprised-looking imp stands a few feet away, holding an empty vial.  He's completely naked, an improbably sized pulsing red cock hanging between his spindly legs.  You flush with desire as a wave of lust washes over you, your mind reeling as you fight ");
 			if (player.gender == Gender.GENDER_FEMALE)
 				outputText("the urge to chase down his rod and impale yourself on it.\n\n");
 			else
@@ -1648,7 +1639,6 @@ import coc.view.MainView;
 			flags[kFLAGS.HUNGER_ENABLED] = 1;
 			flags[kFLAGS.GAME_DIFFICULTY] = 2;
 			player.hunger = 50;
-			menu();
 			doNext(startTheGame);
 		}
 
@@ -1718,7 +1708,6 @@ import coc.view.MainView;
 			statScreenRefresh();
 			if (player.hasPerk(PerkLib.PastLifeCultivator) || player.hasPerk(PerkLib.PastLifeFighter) || player.hasPerk(PerkLib.PastLifeScout) || player.hasPerk(PerkLib.PastLifeScholar) || player.hasPerk(PerkLib.PastLifeSmith) || player.hasPerk(PerkLib.PastLifeTactician) || player.hasPerk(PerkLib.PastLifeWhore)) chooseToPlayHalf();
 			else chooseToPlay();
-			return;
 		}
 
 		private function chooseToPlayHalf():void {
@@ -2561,7 +2550,7 @@ import coc.view.MainView;
 
 			else {
 				clearOutput();
-				outputText("You not have any Descendant perk to change into Bloodline perk.");
+				outputText("You not have any Descendant perks to change into Bloodline perks.");
 			}
 			doNext(ascensionMenu);
 		}

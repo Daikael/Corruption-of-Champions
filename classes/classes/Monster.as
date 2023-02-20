@@ -349,6 +349,15 @@ import flash.utils.getQualifiedClassName;
 			//
 			if (hasPerk(PerkLib.BloodDemonIntelligence)) maxOver2 += 0.1;
 			if (hasPerk(PerkLib.MunchkinAtWork)) maxOver2 += 0.1;
+			if (hasPerk(PerkLib.OverMaxHP)) {
+				if (hasPerk(PerkLib.Enemy300Type)) maxOver2 += (0.15 * perkv1(PerkLib.OverMaxHP));
+				else if (hasPerk(PerkLib.EnemyLargeGroupType)) maxOver2 += (0.1 * perkv1(PerkLib.OverMaxHP));
+				else if (hasPerk(PerkLib.EnemyGroupType)) maxOver2 += (0.05 * perkv1(PerkLib.OverMaxHP));
+				else maxOver2 += (0.01 * perkv1(PerkLib.OverMaxHP));
+			}
+			if (hasPerk(PerkLib.EnemyEliteType)) maxOver2 += 0.05;
+			if (hasPerk(PerkLib.EnemyChampionType)) maxOver2 += 0.1;
+			if (hasPerk(PerkLib.EnemyBossType)) maxOver2 += 0.15;
 			maxOver *= maxOver2;//~180%
 			maxOver = Math.round(maxOver);
 			return maxOver;
@@ -385,6 +394,24 @@ import flash.utils.getQualifiedClassName;
 				min -= wis;
 				min -= lib;
 				min -= sens;
+			}
+			if (hasPerk(PerkLib.DieHardHP)) {
+				if (hasPerk(PerkLib.Enemy300Type)) min -= (maxHP() * 0.15 * perkv1(PerkLib.DieHardHP));
+				else if (hasPerk(PerkLib.EnemyLargeGroupType)) min -= (maxHP() * 0.1 * perkv1(PerkLib.DieHardHP));
+				else if (hasPerk(PerkLib.EnemyGroupType)) min -= (maxHP() * 0.05 * perkv1(PerkLib.DieHardHP));
+				else min -= (maxHP() * 0.01 * perkv1(PerkLib.DieHardHP));
+			}
+			if (hasPerk(PerkLib.EnemyEliteType)) {
+				min -= maxHP() * 0.025;
+				min -= (750 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]));
+			}
+			if (hasPerk(PerkLib.EnemyChampionType)) {
+				min -= maxHP() * 0.05;
+				min -= (1500 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]));
+			}
+			if (hasPerk(PerkLib.EnemyBossType)) {
+				min -= maxHP() * 0.075;
+				min -= (2250 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]));
 			}
 			min = Math.round(min);
 			return min;
@@ -528,7 +555,7 @@ import flash.utils.getQualifiedClassName;
 
 		public override function maxSoulforce():Number {
 			//Base soulforce
-			var temp:Number = 50 + this.bonusSoulforce;
+			var temp:Number = 50 + this.level * 5 + this.bonusSoulforce * 2;
 			if (hasPerk(PerkLib.JobSoulCultivator)) temp += 50;
 			if (hasPerk(PerkLib.SoulApprentice)) {
 				temp += 30;
@@ -588,13 +615,13 @@ import flash.utils.getQualifiedClassName;
 			temp *= multimax;
 			temp *= stats_multi_based_on_misc();
 			temp = Math.round(temp);
-			if ((hasPerk(PerkLib.EnemyTrueDemon) && !hasPerk(PerkLib.Phylactery)) || (hasPerk(PerkLib.EnemyConstructType) && !hasPerk(PerkLib.Sentience))) temp = 0;
+			if ((hasPerk(PerkLib.EnemyTrueDemon) && (!hasPerk(PerkLib.Phylactery) || !hasPerk(PerkLib.EnemyTrueAngel))) || (hasPerk(PerkLib.EnemyConstructType) && !hasPerk(PerkLib.Sentience))) temp = 0;
 			return temp;
 		}
 
 		public override function maxWrath():Number {
 			//Base wrath
-			var temp:Number = 500 + (this.bonusWrath * 5);
+			var temp:Number = 500 + this.level * 5 + this.bonusWrath * 5;
 			if (hasPerk(PerkLib.DoubleAttack)) temp += 50;
 			if (hasPerk(PerkLib.TripleAttack)) temp += 50;
 			if (hasPerk(PerkLib.QuadrupleAttack)) temp += 50;
@@ -689,7 +716,7 @@ import flash.utils.getQualifiedClassName;
 
 		public override function maxMana():Number {
 			//Base mana
-			var temp:Number = 300 + this.level * 10 + this.bonusMana;
+			var temp:Number = 300 + this.level * 10 + this.bonusMana * 3;
 			if (hasPerk(PerkLib.BasicSpirituality)) temp += 135;
 			if (hasPerk(PerkLib.HalfStepToImprovedSpirituality)) temp += 225;
 			if (hasPerk(PerkLib.ImprovedSpirituality)) temp += 360;
@@ -820,7 +847,9 @@ import flash.utils.getQualifiedClassName;
 				if (armorMod < 100) armorMod -= 10;
 				else armorMod *= 0.9;
 			}
+			if (game.player.weapon == game.weapons.SIM_SPR) armorMod *= 0.7;
 			if (game.player.weapon == game.weapons.HALBERD) armorMod *= 0.6;
+			if (game.player.weapon == game.weapons.G_SPEAR) armorMod *= 0.55;
 			if (game.player.weapon == game.weapons.GUANDAO) armorMod *= 0.4;
 			if (game.player.hasPerk(PerkLib.LungingAttacks)) armorMod *= 0.5;
 			if (armorMod < 0) armorMod = 0;
@@ -2206,7 +2235,7 @@ import flash.utils.getQualifiedClassName;
             game.player.clearStatuses(false);
             var temp:Number = rand(10) + 1;
 			if(temp > player.gems) temp = player.gems;
-			outputText("\n\nYou'll probably wake up in eight hours or so, missing " + temp + " gems.");
+			outputText("\n\nYou'll probably wake up in six hours or so, missing " + temp + " gems.");
 			player.gems -= temp;
 			EngineCore.doNext(SceneLib.camp.returnToCampUseSixHours);
 		}
@@ -2428,7 +2457,8 @@ import flash.utils.getQualifiedClassName;
 			//regeneration perks for monsters
 			if (((hasPerk(PerkLib.Regeneration) || hasPerk(PerkLib.LizanRegeneration) || hasPerk(MutationsLib.LizanMarrow) || hasPerk(MutationsLib.LizanMarrowPrimitive) || hasPerk(MutationsLib.LizanMarrowEvolved) || hasPerk(MutationsLib.DraconicHeartEvolved) || hasPerk(PerkLib.EnemyPlantType) || hasPerk(PerkLib.BodyCultivator) || hasPerk(PerkLib.MonsterRegeneration)
 			|| hasPerk(PerkLib.HydraRegeneration) || hasPerk(PerkLib.Lifeline) || hasPerk(PerkLib.ImprovedLifeline) || hasPerk(PerkLib.GreaterLifeline) || hasPerk(PerkLib.EpicLifeline) || hasPerk(PerkLib.IcyFlesh) || hasPerk(PerkLib.HclassHeavenTribulationSurvivor) || hasPerk(PerkLib.GclassHeavenTribulationSurvivor)
-			|| hasPerk(PerkLib.FclassHeavenTribulationSurvivor) || hasPerk(PerkLib.EclassHeavenTribulationSurvivor) || hasStatusEffect(StatusEffects.MonsterRegen) || hasStatusEffect(StatusEffects.MonsterRegen2)) && this.HP < maxHP()) || (hasStatusEffect(StatusEffects.MonsterVPT) && (this.HP < maxOverHP()) && (this.HP > minHP()))) {
+			|| hasPerk(PerkLib.FclassHeavenTribulationSurvivor) || hasPerk(PerkLib.EclassHeavenTribulationSurvivor) || hasStatusEffect(StatusEffects.MonsterRegen) || hasStatusEffect(StatusEffects.MonsterRegen2) || hasPerk(PerkLib.EnemyTrueAngel) || hasPerk(PerkLib.EnemyTrueDemon)) && this.HP < maxHP())
+			|| (hasStatusEffect(StatusEffects.MonsterVPT) && (this.HP < maxOverHP()) && (this.HP > minHP()))) {
 				var healingPercent:Number = 0;
 				var temp2:Number = 0;
 				var temp3:Number = 0;
@@ -2462,6 +2492,8 @@ import flash.utils.getQualifiedClassName;
 					else if (hasPerk(PerkLib.EnemyPlantType)) healingPercent *= 0.5;
 					else healingPercent *= 0.2;
 				}
+				if (hasPerk(PerkLib.EnemyTrueAngel)) healingPercent += 2;
+				if (hasPerk(PerkLib.EnemyTrueDemon)) healingPercent += 1;
 				if (flags[kFLAGS.GAME_DIFFICULTY] == 1) temp3 += 0.55;
 				if (flags[kFLAGS.GAME_DIFFICULTY] == 2) temp3 += 0.25;
 				if (flags[kFLAGS.GAME_DIFFICULTY] == 3) temp3 += 0.15;

@@ -21,7 +21,6 @@ use namespace CoC;
 		public var fetishZealotScene:FetishZealotScene = new FetishZealotScene();
 		public var gooGirlScene:GooGirlScene = new GooGirlScene();
 		public var greenSlimeScene:GreenSlimeScene = new GreenSlimeScene();
-		public var kaiju:Kaiju = new Kaiju();
 		public var calluScene:CalluScene = new CalluScene();
 		public var swordInStone:SwordInStone = new SwordInStone();
 		public function Lake()
@@ -51,7 +50,7 @@ use namespace CoC;
 				return;
 			}
 			//Belisa
-			if (BelisaFollower.BelisaInGame && BelisaFollower.BelisaFollowerStage < 3 && BelisaFollower.BelisaEncounternum >= 1 && rand(5) == 0) {
+			if (BelisaFollower.BelisaInGame && BelisaFollower.BelisaFollowerStage < 3 && BelisaFollower.BelisaEncounternum >= 2 && rand(5) == 0) {
 				SceneLib.belisa.subsequentEncounters();
 				return;
 			}
@@ -67,7 +66,7 @@ use namespace CoC;
 				SceneLib.etnaScene.repeatYandereEnc();
 				return;
 			}
-			if (player.exploredLake % 15 == 0) {
+			if (player.exploredLake % 15 == 0 && !player.hasStatusEffect(StatusEffects.CalluOff)) {
 				calluScene.ottahGirl();
 				return;
 			}
@@ -250,10 +249,6 @@ use namespace CoC;
 			}
 			else if (select == 1) {
 				//No boat, no kaiju
-				if (player.level >= 5 && flags[kFLAGS.KAIJU_DISABLED] == 0 && player.hasStatusEffect(StatusEffects.BoatDiscovery)) {
-					kaiju.kaijuMeeting();
-					return;
-				}
 				clearOutput();
 				outputText("Your stroll around the lake increasingly bores you, leaving your mind to wander.  ");
 				if (player.cor > 30 || player.lust > 60 || player.lib > 40) outputText("Your imaginings increasingly seem to turn ");

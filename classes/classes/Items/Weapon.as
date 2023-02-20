@@ -96,10 +96,12 @@ public class Weapon extends Useable //Equipable
 		override public function canUse():Boolean {
 			if ((perk == "Large" && game.player.shield != ShieldLib.NOTHING && !game.player.hasPerk(PerkLib.GigantGrip)) || (perk == "Massive" && game.player.shield != ShieldLib.NOTHING)) {
 				outputText("Because this weapon requires the use of two hands, you have unequipped your shield. ");
+				SceneLib.inventory.unequipShield();
 				return false;
 			}
-			else if (perk == "Dual Large" || perk == "Dual" || perk == "Dual Small") {
+			else if ((perk == "Dual Large" || perk == "Dual" || perk == "Dual Small") && game.player.shield != ShieldLib.NOTHING) {
 				outputText("Because those weapons requires the use of two hands, you have unequipped your shield. ");
+				SceneLib.inventory.unequipShield();
 				return false;
 			}
 			else if (game.player.hasPerk(PerkLib.Rigidity)) {
@@ -111,17 +113,17 @@ public class Weapon extends Useable //Equipable
 		
 		public function playerEquip():Weapon { //This item is being equipped by the player. Add any perks, etc. - This function should only handle mechanics, not text output
 			var temp:Array = perk.split(", ");
-            var temp2:Array = ["Large", "Massive", "Dual", "Dual Large", "Dual Small"]
-            for each (var temp3:String in temp2){
-                if (temp.indexOf(temp3) && game.player.shield != ShieldLib.NOTHING){
-                    if (temp3 == "Large") {
-                        if (game.player.hasPerk(PerkLib.GigantGrip)){
-                            break;
-                        }
-                    }
-                    SceneLib.inventory.unequipShield();
-                }
-            }/*
+			var temp2:Array = ["Large", "Massive", "Dual", "Dual Large", "Dual Small"]
+			for each (var temp3:String in temp2){
+				if (temp.indexOf(temp3) >= 0 && game.player.shield != ShieldLib.NOTHING){
+					if (temp3 == "Large") {
+						if (game.player.hasPerk(PerkLib.GigantGrip)){
+								break;
+							}
+						}
+					SceneLib.inventory.unequipShield();
+				}
+			}/*
 			if ((perk == "Large" && game.player.shield != ShieldLib.NOTHING && !game.player.hasPerk(PerkLib.GigantGrip))
 			|| (perk == "Massive" && game.player.shield != ShieldLib.NOTHING)
 			|| (perk == "Dual" && game.player.shield != ShieldLib.NOTHING)

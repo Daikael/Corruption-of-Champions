@@ -52,6 +52,11 @@ import classes.internals.*;
 			if (hasPerk(PerkLib.DaoistCultivator)) cost -= 5;
 			return cost;
 		}
+		public function soulskillCostGrandioseHailofBlades():Number {
+			var cost:Number = 200;
+			if (hasPerk(PerkLib.DaoistCultivator)) cost -= 20;
+			return cost;
+		}
 		
 		public function SoulskillMod():Number {
 			var mod1:Number = 1;
@@ -91,15 +96,19 @@ import classes.internals.*;
 		public function castHailOfBladesSoulskillDinah():void {
 			outputText("Letting soulforce leak out around her, Dinah form six ethereal two meter long weapons. Then she thrust her hand outwards and in the blink of an eye, weapons shoot forwards you. Weapons hits you, dealing ");
 			soulforce -= soulskillCostHailofBlades();
-			bladesD();
-			bladesD();
-			bladesD();
-			bladesD();
-			bladesD();
-			bladesD();
-			outputText(" damage!");
+			var hobD:Number = 6;
+			while (hobD-->0) bladesD();
+			outputText("damage!");
 		}
-		private function bladesD():void {
+		public function castGrandioseHailOfBladesSoulskillDinah():void {
+			outputText("Letting soulforce leak out around her, Dinah form eighteen ethereal two meter long weapons in two rows. Then she thrust her hand outwards and in the blink of an eye, weapons shoot forwards you. Weapons hits you, dealing ");
+			soulforce -= soulskillCostGrandioseHailofBlades();
+			createStatusEffect(StatusEffects.AbilityCooldown2, 3, 0, 0, 0);
+			var ghobD:Number = 9;
+			while (ghobD-->0) bladesD(2);
+			outputText("damage!");
+		}
+		private function bladesD(hits:Number = 1):void {
 			var bd:Number = 0;
 			bd += this.wis * 0.5;
 			bd += wisdomscalingbonus() * 0.5;
@@ -120,6 +129,11 @@ import classes.internals.*;
 			bd = player.takeMagicDamage(bd, true);
 			if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 			outputText(" ");
+			if (hits == 2) {
+				bd = player.takeMagicDamage(bd, true);
+				if (crit == true) outputText(" <b>*Critical Hit!*</b>");
+				outputText(" ");
+			}
 		}
 		
 		public function castWhiteFireSpellDinah():void {
@@ -246,7 +260,8 @@ import classes.internals.*;
 						else hellcatFireballDinah();
 						break;
 					case 3:
-						if ((soulforce >= soulskillCostHailofBlades()) && rand(2) == 0) castHailOfBladesSoulskillDinah();
+						if ((soulforce >= soulskillCostGrandioseHailofBlades()) && !hasStatusEffect(StatusEffects.AbilityCooldown2)) castGrandioseHailOfBladesSoulskillDinah();
+						else if ((soulforce >= soulskillCostHailofBlades()) && rand(2) == 0) castHailOfBladesSoulskillDinah();
 						else hellcatInfernalClawDinah();
 						break;
 					case 4:

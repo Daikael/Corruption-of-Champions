@@ -69,7 +69,6 @@ public class Holidays {
             EngineCore.doNext(SceneLib.camp.returnToCampUseOneHour);
         }
         EngineCore.simpleChoices("Fuck It", fuck, "Mount It", mount, "", null, "", null, "No Way", SceneLib.camp.returnToCampUseOneHour);
-        //addButton(3, "Smash It", pumpkinSmash);
         //[HOLY SHIT YOU BE FUCKING A PUMPKIN]
         function pumpkinFuck():void {
             EngineCore.clearOutput();
@@ -2065,7 +2064,7 @@ public class Holidays {
         //[FEMALE SCENE]
         function vagFuckXmasElf():void {
             EngineCore.outputText("She pushes you down onto your bedroll and whispers, \"<i>Time to enjoy your present.</i>\"\n\n"
-                    +"The elf winks and spreads her legs, revealing her obviously aroused sex to you.  She winks and you see her muscles clench.  The moist lips of her vagina slowly spread apart, and a blunt white object begins to squeeze out.  Is she laying an egg?  Wait- no, more of the object slides out and you can see now that it's tubular in shape, like some sort of sex-toy, and it's covered in a spiraling red pattern.  The object continues its slow journey downwards, roughly six inches hanging free as the elf grunts and moans, her face flushed.   She grips it with both hands and pulls it slowly.  It reminds you the soldiers in training back home the first time they tried to draw a sword – a mix of awkwardness and excitement.\n\n"
+                    +"The elf winks and spreads her legs, revealing her obviously aroused sex to you.  She winks and you see her muscles clench.  The moist lips of her vagina slowly spread apart, and a blunt white object begins to squeeze out.  Is she laying an egg?  Wait- no, more of the object slides out and you can see now that it's tubular in shape, like some sort of sex-toy, and it's covered in a spiraling red pattern.  The object continues its slow journey downwards, roughly six inches hanging free as the elf grunts and moans, her face flushed.   She grips it with both hands and pulls it slowly.  It reminds you of the soldiers in training back home the first time they tried to draw a sword – a mix of awkwardness and excitement.\n\n"
                     +"In seconds the elf has her hands around a red-striped double-sided dildo.  It wiggles back and forth obscenely, and now that you have a good look at it, you realize the red sections are slightly raised, to better stimulate the user.  She pants and runs her hand over its pussy-slicked surface, shivering in remembered pleasure until her attention returns to you.  Her lips curl into a knowing smile and she kneels between your [legs], spreading them apart for better access to your " + Appearance.vaginaDescript(player, 0) + ".\n\n"
                     +"The diminutive elf rubs the tip over your lower lips and " + Appearance.clitDescription(player) + " a few times, getting you nice and hot before she slides it up your " + Appearance.vaginaDescript(player, 0) + ".  The dildo feels wonderful inside, each curved ridge sending shivers up your spine as it enters you, then stroking along your walls as you take it deeper and deeper.  The motion is interrupted once your 'present' has decided she's lodged her candy-cane-like toy deep enough inside you.  She lies back and scoots forwards, taking the rest of the striped dildo into her hairless snatch until your mounds are locked together, feminine fluids mixing on an artificial cock.");
             player.cuntChange(15, true, true, false);
@@ -2079,8 +2078,8 @@ public class Holidays {
             EngineCore.outputText(" as your " + Appearance.vaginaDescript(player, 0) + " is drilled by the elf's double-ended dong.   It feels beyond good, like having a cock inside you that rubs against each part of your pussy over and over and over without the barest hint of mercy.  Your gasp and pant, glancing back up at the elf.  She's already recovered from her orgasm, though she has an intense look of concentration on her face while she focuses on twisting the dildo inside you.\n\n"
 
                     +"\"<i>You don't think I'd let you cum just once did you?  I'm going to drill all the naughty, sinful little thoughts from your slut-hole!</i>\"\n\n"
-                    +"You throw your head back and let out a low shuddering moan as she spins the dildo even faster, forcing your convulsing cunt to stay locked in a mind-shattering orgasm.  Eyes crossed, you collapse onto your back and twitch, body wriggling and flopping about nervelessly as it caves in to pleasure it was never meant to handle.\n\n"
-                    +"You black out to the following words: \"<i>Good girl.  Keep cumming, let out all those naughty thoughts.  I can't wait to see you next year!</i>\"");
+                    +"You throw your head back and let out a low shuddering moan as she spins the dildo even faster, forcing your convulsing cunt to stay locked in a mind-shattering orgasm.  Eyes crossed, you collapse onto your back and twitch, body wriggling and flopping about nervelessly as it caves into pleasure it was never meant to handle.\n\n"
+                    +"You blackout to the following words: \"<i>Good girl.  Keep cumming, let out all those naughty thoughts.  I can't wait to see you next year!</i>\"");
             EngineCore.doNext(xmasFuckFollowupFems);
             player.orgasm();
         }
@@ -3426,7 +3425,7 @@ public class Holidays {
         EngineCore.clearOutput();
         if (flags[kFLAGS.KAMI_ENCOUNTER] == 1) {
             //[Player chooses 'Kami']
-            EngineCore.outputText("You give Kami a nod, heading out back as she punches out for a quick break.  The waitress is out quicker than you expect, already ripping out of her red and white uniform to expose her hungry phallus.  \"<i>I'm not gonna lie, doll, you wouldn't BELIEVE how frisky working in this outfit has gotten me.</i>\"  You eye over her bodacious figure, planning your course of action.  You can tell she's been sampling her own lust-inducing cakes, and as impossible as it sounds, she looks far more hornier than usual.");
+            EngineCore.outputText("You give Kami a nod, heading out back as she punches out for a quick break.  The waitress is out quicker than you expect, already ripping out of her red and white uniform to expose her hungry phallus.  \"<i>I'm not gonna lie, doll, you wouldn't BELIEVE how frisky working in this outfit has gotten me.</i>\"  You eye over her bodacious figure, planning your course of action.  You can tell she's been sampling her own lust-inducing cakes, and as impossible as it sounds, she looks far hornier than usual.");
             //[Player gets the 4 options again]
             //Give Anal (Requires cock and no naga or centaur legs.)
             //Receive Anal (Again, no naga or centaur legs.)
@@ -3434,11 +3433,11 @@ public class Holidays {
             //Double-Dick Fuck (requires at least 2 cocks)
             EngineCore.menu();
             if (player.hasCock() && player.cockThatFits(70) >= 0) EngineCore.addButton(0, "Give Anal", giveKamiTheChristmasRooAnal);
-            else EngineCore.addButtonDisabled(0, "Give Anal", "Req. cock with area < 70");
+            else EngineCore.addButtonDisabled(0, "Give Anal", "Req. cock with area smaller than 70");
             EngineCore.addButton(1, "Receive Anal", takeItRooButtStyle);
             EngineCore.addButton(2, "Give BJ", KamiBlowJob);
             if (player.cockTotal() > 1 && player.cockThatFits(70) >= 0 && player.cockThatFits2(70) >= 0) EngineCore.addButton(3, "Doube-Fuck", KamiDoubleDickFuck);
-            else EngineCore.addButtonDisabled(3, "Doube-Fuck", "Req. 2 cocks with area < 70");
+            else EngineCore.addButtonDisabled(3, "Doube-Fuck", "Req. 2 cocks with area smaller than 70");
         }
         else {
             EngineCore.outputText("You summon the buxom waitress over, getting a much better view of her gentle face now that she's found the time to sit and talk with you.  With hazelnut-brown eyes, a gorgeous set of lips and tousled blonde hair, her faux-rebellious look is the icing on the festive cake for this busty waitress, her cute little santa hat being the strawberry on top.  Smooth, olive skin runs halfway down her meaty thighs before fading into soft fur, while her frail forearms follow the same pattern. Her huge kangaroo tail wags idly throughout your conversation, and you've gained a pretty good rhythm whilst engaging her in it. Determined to make things go well, you pause to pull out a charming one-liner when her index finger meets your ");
